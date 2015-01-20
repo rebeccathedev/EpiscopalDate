@@ -1,7 +1,9 @@
 <?php
 
+namespace EpiscopalDate;
+
 /**
- * Episcopal.php
+ * EpiscopalDate.php
  * 
  * This class contains a bunch of static methods mostly concerned with handling
  * dates in the Episcopal Church USA (the American branch of the worldwide 
@@ -12,7 +14,7 @@
  * @license     BSD
  * @package     Episcopal
  */
-class Episcopal {
+class EpiscopalDate {
 
     /**
      * Calculates the date of Easter on the Gregorian Calendar. This is based on
@@ -23,9 +25,16 @@ class Episcopal {
      * @param   int     $year   The year. If omitted, the current year.
      * @return  int             A timestamp representing Easter. 
      */
-    public static function easter_date($year = "") {
+    public static function easterDate($year = "") {
         if (empty($year)) {
             $year = (int) date("Y");
+        }
+
+        // PHP has a builtin function for this, but it only works with valid
+        // UNIX time. So if we're trying to calculate a date where UNIX time is
+        // valid, we can use this instead of calculating it ourselves.
+        if (function_exists("easter_date") && $year >= 1970 && $year <= 2037) {
+            return easter_date($year);
         }
 
         $golden = $year % 19;
@@ -46,8 +55,8 @@ class Episcopal {
      * @param   int     $year   The year. If omitted, the current year.
      * @return  int             A timestamp representing Ash Wednesday. 
      */
-    public static function ash_wednesday_date($year = "") {
-        $easter = Episcopal::easter_date($year);
+    public static function ashWednesdayDate($year = "") {
+        $easter = EpiscopalDate::easterDate($year);
         return strtotime(date("Y-m-d", $easter) . " -46 days");
     }
 
@@ -58,8 +67,8 @@ class Episcopal {
      * @param   int     $year   The year. If omitted, the current year.
      * @return  int             A timestamp representing Mandy Thursday. 
      */
-    public static function maundy_thursday_date($year = "") {
-        $easter = Episcopal::easter_date($year);
+    public static function maundyThursdayDate($year = "") {
+        $easter = EpiscopalDate::easterDate($year);
         return strtotime(date("Y-m-d", $easter) . " -3 days");
     }
 
@@ -69,8 +78,8 @@ class Episcopal {
      * @param   int     $year   The year. If omitted, the current year.
      * @return  int             A timestamp representing Good Friday. 
      */
-    public static function good_friday_date($year = "") {
-        $easter = Episcopal::easter_date($year);
+    public static function goodFridayDate($year = "") {
+        $easter = EpiscopalDate::easterDate($year);
         return strtotime(date("Y-m-d", $easter) . " -2 days");
     }
 
@@ -80,8 +89,8 @@ class Episcopal {
      * @param   int     $year   The year. If omitted, the current year.
      * @return  int             A timestamp representing Palm Sunday. 
      */
-    public static function palm_sunday_date($year = "") {
-        $easter = Episcopal::easter_date($year);
+    public static function palmSundayDate($year = "") {
+        $easter = EpiscopalDate::easterDate($year);
         return strtotime(date("Y-m-d", $easter) . " -1 week");
     }
 
@@ -91,8 +100,8 @@ class Episcopal {
      * @param   int     $year   The year. If omitted, the current year.
      * @return  int             A timestamp representing Pentecost. 
      */
-    public static function pentecost_date($year = "") {
-        $easter = Episcopal::easter_date($year);
+    public static function pentecostDate($year = "") {
+        $easter = EpiscopalDate::easterDate($year);
         return strtotime(date("Y-m-d", $easter) . " +7 weeks");
     }
 
@@ -104,7 +113,7 @@ class Episcopal {
      * @return  int             A timestamp representing the first Sunday of 
      *                          Advent. 
      */
-    public static function advent_date($year = "") {
+    public static function adventDate($year = "") {
         if (empty($year)) {
             $year = (int) date("Y");
         }
@@ -119,14 +128,14 @@ class Episcopal {
      * @param   int     $timestamp  A timestamp.
      * @return  string              One of A, B, C.
      */
-    public static function liturgical_year($timestamp = "") {
+    public static function liturgicalYear($timestamp = "") {
         if(empty($timestamp)) {
             $timestamp = time();
         }
         
         $years = array("C", "A", "B");
         $year = date("Y", $timestamp);
-        if ($timestamp > Episcopal::advent_date($year)) {
+        if ($timestamp > EpiscopalDate::adventDate($year)) {
             $year++;
         }
 
@@ -139,7 +148,7 @@ class Episcopal {
      * @param   int     $timestamp  A timestamp.
      * @return  string              The liturgical season.
      */
-    public static function liturgical_season($timestamp = "") {
+    public static function liturgicalSeason($timestamp = "") {
         if(empty($timestamp)) {
             $timestamp = time();
         }
@@ -147,10 +156,10 @@ class Episcopal {
         $season = "";
         $year = date("Y", $timestamp);
 
-        $easter = Episcopal::easter_date($year);
-        $advent = Episcopal::advent_date($year);
-        $ash = Episcopal::ash_wednesday_date($year);
-        $pentecost = Episcopal::pentecost_date($year);
+        $easter = EpiscopalDate::easterDate($year);
+        $advent = EpiscopalDate::adventDate($year);
+        $ash = EpiscopalDate::ashWednesdayDate($year);
+        $pentecost = EpiscopalDate::pentecostDate($year);
 
         if ($timestamp >= $ash && $timestamp <= $easter) {
             $season = "Lent";
@@ -176,7 +185,7 @@ class Episcopal {
      * @param   int     $timestamp  A timestamp.
      * @return  string              The current liturgical week.
      */
-    public static function liturgical_week($timestamp = "") {
+    public static function liturgicalWeek($timestamp = "") {
         if(empty($timestamp)) {
             $timestamp = time();
         }
@@ -188,7 +197,7 @@ class Episcopal {
         }
         
         $year = date("Y", $timestamp);
-        $calendar = Episcopal::liturgical_calendar($year);
+        $calendar = EpiscopalDate::liturgicalCalendar($year);
         return $calendar[date("Y-m-d", $sunday)];
     }
 
@@ -200,7 +209,7 @@ class Episcopal {
      * @param   int     $year   The year. If omitted, the current year.
      * @return type 
      */
-    public static function liturgical_calendar($year) {
+    public static function liturgicalCalendar($year) {
         if (empty($year)) {
             $year = (int) date("Y");
         }
@@ -210,13 +219,13 @@ class Episcopal {
         $z = array();
         $s = $first_sunday;
         while($s < strtotime($year + 1 . "-01-01")) {
-            $m = Episcopal::liturgical_season($s);
+            $m = EpiscopalDate::liturgicalSeason($s);
             
             if($m == "Pentecost" && !isset($z[$m])) {
                 $z[$m] = -1;
             }
             $z[$m]++;
-            $ret[date("Y-m-d", $s)] = Episcopal::liturgical_season($s) . " " . $z[$m];
+            $ret[date("Y-m-d", $s)] = EpiscopalDate::liturgicalSeason($s) . " " . $z[$m];
             $s += 604800;
         }
         
