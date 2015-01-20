@@ -11,7 +11,7 @@ namespace EpiscopalDate;
  * functions are suitable for use in other denominations as well.
  * 
  * @author      Rob Peck <rob@robpeck.com>
- * @license     BSD
+ * @license     MIT
  * @package     Episcopal
  */
 class EpiscopalDate {
