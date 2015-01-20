@@ -1,0 +1,17 @@
+{
+    "name": "peckrob/episcopal-date",
+    "description": "This class contains a bunch of static methods mostly concerned with handling dates in the Episcopal Church USA (the American branch of the worldwide Anglican Communion). As a Western Christian tradition, many of these functions are suitable for use in other denominations as well.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Rob Peck",
+            "email": "rob@robpeck.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-0": {
+            "EpiscopalDate": "EpiscopalDate/"
+        }
+    }
+}
