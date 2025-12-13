@@ -1,140 +1,138 @@
-EpiscopalDate
-=============
+# EpiscopalDate
 
-EpiscopalDate is a small PHP class with a bunch of static methods for calculating dates and calendars in the Episcopal Church USA (the American branch of the worldwide Anglican Communion). As a Western Christian tradition, many of these functions are suitable for use in other denominations as well.
-
-I wrote this as part of a rewrite of my Church's website and figured it might be useful to others as well.
-
- * Calculates the dates of Easter, Advent, Palm Sunday, Maundy Thursday, Good Friday and Pentecost.
- * Calculates the Liturgical year, based on the Revised Common Lectionary and the Book of Common Prayer.
- * Produces a full Liturgical calendar.
+A modern PHP 8.1+ library for handling dates in the Episcopal Church USA (the American branch of the worldwide Anglican Communion). As a Western Christian tradition, many of these functions are suitable for use in other denominations as well.
 
 ## Requirements
 
-PHP 5.3+
+- PHP 8.1 or higher
 
-## Installing
+## Installation
 
-This class is PSR-4 autoloading compliant and uses namespaces. If you are using composer, installation is easy. Just add this to the require line in your composer.json file:
-
-```
-"rebeccathedev/episcopaldate": "dev-master"
+```bash
+composer require rebeccathedev/episcopaldate
 ```
 
-Alternatively, you can download the class and use it directly. It has no dependencies.
+## Features
 
-## Using
+- Calculate liturgical dates (Easter, Advent, Ash Wednesday, etc.)
+- Determine liturgical seasons and years
+- Generate full liturgical calendars
+- Modern PHP 8.1+ with enums, typed properties, and DateTimeImmutable
+- Full test coverage with PHPUnit
+- Backwards compatible legacy API
 
-Using the class is easy. All of the date functions return UNIX timestamps that can be formatted however you like using the builtin PHP date() function.
+## Usage
+
+### Modern API (Recommended)
 
 ```php
 use EpiscopalDate\EpiscopalDate;
+use DateTimeImmutable;
 
-$easter_date = EpiscopalDate::easterDate(2014);
-echo date("Y-m-d", $easter_date);
-// Outputs 2014-04-20.
+// Create an instance for today
+$date = new EpiscopalDate();
+
+// Or for a specific date
+$date = new EpiscopalDate(new DateTimeImmutable('2024-03-15'));
+
+// Get liturgical dates
+$easter = $date->getEaster();              // DateTimeImmutable
+$ashWednesday = $date->getAshWednesday();
+$palmSunday = $date->getPalmSunday();
+$pentecost = $date->getPentecost();
+$advent = $date->getAdvent();
+
+// Get season and year
+$season = $date->getSeason();              // Season enum
+echo $season->value;                       // "Lent"
+
+$year = $date->getLiturgicalYear();        // LiturgicalYear enum
+echo $year->value;                         // "A", "B", or "C"
+
+// Get liturgical week
+$week = $date->getLiturgicalWeek();        // "Lent 3"
+
+// Generate a full liturgical calendar
+$calendar = $date->generateLiturgicalCalendar(2024);
+foreach ($calendar as $sunday => $weekName) {
+    echo "$sunday: $weekName\n";
+}
+
+// Calculate dates for specific years
+$easter2025 = EpiscopalDate::calculateEaster(2025);
+$advent2025 = EpiscopalDate::calculateAdvent(2025);
 ```
 
-## Full Method Reference
+### Enums
 
-```java
-/**
- * Calculates the date of Easter on the Gregorian Calendar. This is based on
- * a function found in the comments here:
- * 
- * http://www.php.net/manual/en/function.easter-date.php
- * 
- * @param   int     $year   The year. If omitted, the current year.
- * @return  int             A timestamp representing Easter. 
- */
-public static function easterDate($year = "");
+The library provides two enums for type safety:
 
-/**
- * Calculates the date for Ash Wednesday, which is 46 days before Easter.
- * 
- * @param   int     $year   The year. If omitted, the current year.
- * @return  int             A timestamp representing Ash Wednesday. 
- */
-public static function ashWednesdayDate($year = "");
+```php
+use EpiscopalDate\Season;
+use EpiscopalDate\LiturgicalYear;
 
-/**
- * Calculates the date of Mandy Thursday, which occurrs three days before 
- * Easter.
- * 
- * @param   int     $year   The year. If omitted, the current year.
- * @return  int             A timestamp representing Mandy Thursday. 
- */
-public static function maundyThursdayDate($year = "");
+// Season enum
+Season::Advent
+Season::Christmas
+Season::Epiphany
+Season::Lent
+Season::Easter
+Season::Pentecost
 
-/**
- * Calculates the date of Good Friday, which occurrs two days before Easter.
- * 
- * @param   int     $year   The year. If omitted, the current year.
- * @return  int             A timestamp representing Good Friday. 
- */
-public static function goodFridayDate($year = "");
+// LiturgicalYear enum
+LiturgicalYear::A
+LiturgicalYear::B
+LiturgicalYear::C
 
-/**
- * Calculates the date for Palm Sunday, the Sunday before Easter.
- * 
- * @param   int     $year   The year. If omitted, the current year.
- * @return  int             A timestamp representing Palm Sunday. 
- */
-public static function palmSundayDate($year = "");
+// Calculate liturgical year from calendar year
+$year = LiturgicalYear::forYear(2024);  // LiturgicalYear::B
+```
 
-/**
- * Calculates the date of Pentecost, 7 weeks after Easter.
- * 
- * @param   int     $year   The year. If omitted, the current year.
- * @return  int             A timestamp representing Pentecost. 
- */
-public static function pentecostDate($year = "");
+### Legacy API (Backwards Compatibility)
 
-/**
- * Calculates the date of Advent, which is defined as the 4th Sunday before 
- * Christmas.
- * 
- * @param   int     $year   The year. If omitted, the current year.
- * @return  int             A timestamp representing the first Sunday of 
- *                          Advent. 
- */
-public static function adventDate($year = "");
+For backwards compatibility with the old timestamp-based API:
 
-/**
- * Calculates the Episcopal Liturgial Church Year, based on a date. The 
- * liturgical year begins on Advent.
- * 
- * @param   int     $timestamp  A timestamp.
- * @return  string              One of A, B, C.
- */
-public static function liturgicalYear($timestamp = "");
+```php
+use EpiscopalDate\LegacyEpiscopalDate;
 
-/**
- * Returns a string representing the liturgical season.
- * 
- * @param   int     $timestamp  A timestamp.
- * @return  string              The liturgical season.
- */
-public static function liturgicalSeason($timestamp = "");
+// All methods return Unix timestamps
+$easter = LegacyEpiscopalDate::easterDate(2024);
+$ashWednesday = LegacyEpiscopalDate::ashWednesdayDate(2024);
+$season = LegacyEpiscopalDate::liturgicalSeason(time());
+$year = LegacyEpiscopalDate::liturgicalYear(time());
+```
 
-/**
- * Returns the liturgical week.
- * 
- * @param   int     $timestamp  A timestamp.
- * @return  string              The current liturgical week.
- */
-public static function liturgicalWeek($timestamp = "");
+## Development
 
-/**
- * Generages a full liturgical calendar, with the keys as the sundays of 
- * each week and the values as the liturgical season and week.
- * 
- * @param   int     $year   The year. If omitted, the current year.
- * @return type 
- */
-public static function liturgicalCalendar($year);
+### Running Tests
+
+```bash
+composer install
+vendor/bin/phpunit
+```
+
+### Project Structure
+
+```
+src/
+├── EpiscopalDate.php          # Main class with modern API
+├── LegacyEpiscopalDate.php    # Legacy backwards-compatible API
+├── Season.php                  # Season enum
+└── LiturgicalYear.php         # Liturgical year enum
+
+tests/
+├── EpiscopalDateTest.php
+└── LegacyEpiscopalDateTest.php
 ```
 
 ## License
 
-MIT
+MIT License - see LICENSE file for details
+
+## Author
+
+Rebecca Peck <me@rebeccapeck.org>
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.

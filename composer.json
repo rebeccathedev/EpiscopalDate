@@ -1,6 +1,6 @@
 {
     "name": "rebeccathedev/episcopaldate",
-    "description": "This class contains a bunch of static methods mostly concerned with handling dates in the Episcopal Church USA (the American branch of the worldwide Anglican Communion). As a Western Christian tradition, many of these functions are suitable for use in other denominations as well.",
+    "description": "A modern PHP 8.1+ library for handling dates in the Episcopal Church USA (the American branch of the worldwide Anglican Communion). As a Western Christian tradition, many of these functions are suitable for use in other denominations as well.",
     "license": "MIT",
     "authors": [
         {
@@ -8,10 +8,21 @@
             "email": "me@rebeccapeck.org"
         }
     ],
+    "require": {
+        "php": "^8.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.0"
+    },
     "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
-            "EpiscopalDate\\": "EpiscopalDate/"
+            "EpiscopalDate\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "EpiscopalDate\\Tests\\": "tests/"
         }
     }
 }
