@@ -1,6 +1,6 @@
 <?php
 
-namespace EpiscopalDate;
+namespace RebeccaTheDev\EpiscopalDate;
 
 use DateTimeImmutable;
 use DateTimeZone;

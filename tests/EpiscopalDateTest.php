@@ -1,11 +1,11 @@
 <?php
 
-namespace EpiscopalDate\Tests;
+namespace RebeccaTheDev\EpiscopalDate\Tests;
 
 use DateTimeImmutable;
-use EpiscopalDate\EpiscopalDate;
-use EpiscopalDate\LiturgicalYear;
-use EpiscopalDate\Season;
+use RebeccaTheDev\EpiscopalDate\EpiscopalDate;
+use RebeccaTheDev\EpiscopalDate\LiturgicalYear;
+use RebeccaTheDev\EpiscopalDate\Season;
 use PHPUnit\Framework\TestCase;
 
 class EpiscopalDateTest extends TestCase

@@ -1,6 +1,6 @@
 <?php
 
-namespace EpiscopalDate;
+namespace RebeccaTheDev\EpiscopalDate;
 
 /**
  * Represents the liturgical seasons of the Episcopal Church

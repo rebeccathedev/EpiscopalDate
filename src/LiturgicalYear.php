@@ -1,6 +1,6 @@
 <?php
 
-namespace EpiscopalDate;
+namespace RebeccaTheDev\EpiscopalDate;
 
 /**
  * Represents the three-year lectionary cycle (Year A, B, C) used in the Episcopal Church

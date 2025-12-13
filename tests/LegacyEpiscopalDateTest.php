@@ -1,8 +1,8 @@
 <?php
 
-namespace EpiscopalDate\Tests;
+namespace RebeccaTheDev\EpiscopalDate\Tests;
 
-use EpiscopalDate\LegacyEpiscopalDate;
+use RebeccaTheDev\EpiscopalDate\LegacyEpiscopalDate;
 use PHPUnit\Framework\TestCase;
 
 class LegacyEpiscopalDateTest extends TestCase

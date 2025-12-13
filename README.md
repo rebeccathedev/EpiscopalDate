@@ -1,32 +1,30 @@
-# EpiscopalDate
+# ✝️ EpiscopalDate
 
 A modern PHP 8.1+ library for handling dates in the Episcopal Church USA (the American branch of the worldwide Anglican Communion). As a Western Christian tradition, many of these functions are suitable for use in other denominations as well.
 
-## Requirements
-
-- PHP 8.1 or higher
-
-## Installation
+## 📦 Installation
 
 ```bash
 composer require rebeccathedev/episcopaldate
 ```
 
-## Features
+**Requirements:** PHP 8.1 or higher
 
-- Calculate liturgical dates (Easter, Advent, Ash Wednesday, etc.)
-- Determine liturgical seasons and years
-- Generate full liturgical calendars
-- Modern PHP 8.1+ with enums, typed properties, and DateTimeImmutable
-- Full test coverage with PHPUnit
-- Backwards compatible legacy API
+## ✨ Features
 
-## Usage
+- 📅 Calculate liturgical dates (Easter, Advent, Ash Wednesday, etc.)
+- 🎨 Determine liturgical seasons and years
+- 📖 Generate full liturgical calendars
+- 🔥 Modern PHP 8.1+ with enums, typed properties, and DateTimeImmutable
+- ✅ Full test coverage with PHPUnit
+- 🔄 Backwards compatible legacy API
+
+## 🚀 Usage
 
 ### Modern API (Recommended)
 
 ```php
-use EpiscopalDate\EpiscopalDate;
+use RebeccaTheDev\EpiscopalDate\EpiscopalDate;
 use DateTimeImmutable;
 
 // Create an instance for today
@@ -63,13 +61,13 @@ $easter2025 = EpiscopalDate::calculateEaster(2025);
 $advent2025 = EpiscopalDate::calculateAdvent(2025);
 ```
 
-### Enums
+### 🎯 Enums
 
 The library provides two enums for type safety:
 
 ```php
-use EpiscopalDate\Season;
-use EpiscopalDate\LiturgicalYear;
+use RebeccaTheDev\EpiscopalDate\Season;
+use RebeccaTheDev\EpiscopalDate\LiturgicalYear;
 
 // Season enum
 Season::Advent
@@ -88,12 +86,12 @@ LiturgicalYear::C
 $year = LiturgicalYear::forYear(2024);  // LiturgicalYear::B
 ```
 
-### Legacy API (Backwards Compatibility)
+### 🔄 Legacy API (Backwards Compatibility)
 
 For backwards compatibility with the old timestamp-based API:
 
 ```php
-use EpiscopalDate\LegacyEpiscopalDate;
+use RebeccaTheDev\EpiscopalDate\LegacyEpiscopalDate;
 
 // All methods return Unix timestamps
 $easter = LegacyEpiscopalDate::easterDate(2024);
@@ -102,7 +100,7 @@ $season = LegacyEpiscopalDate::liturgicalSeason(time());
 $year = LegacyEpiscopalDate::liturgicalYear(time());
 ```
 
-## Development
+## 🧪 Development
 
 ### Running Tests
 
@@ -125,14 +123,14 @@ tests/
 └── LegacyEpiscopalDateTest.php
 ```
 
-## License
+## 📝 License
 
-MIT License - see LICENSE file for details
+MIT License - see [LICENSE](LICENSE) file for details
 
-## Author
+## 👩‍💻 Author
 
-Rebecca Peck <me@rebeccapeck.org>
+**Rebecca Peck** - <me@rebeccapeck.org>
 
-## Contributing
+## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
